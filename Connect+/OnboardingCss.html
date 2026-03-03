@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Onboarding — CSS (Customer Success)</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: { primary: "#f20d0d", bgDark: "#050505" },
+          fontFamily: { display: ["Plus Jakarta Sans", "sans-serif"] }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .glass-card { background: rgba(20,20,20,.65); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.1); }
+      .red-glow { box-shadow: 0 0 25px -5px rgba(242, 13, 13, 0.25); }
+      .bg-radial { background: radial-gradient(circle at 50% 50%, #1a0505 0%, #050505 100%); }
+    }
+  </style>
+</head>
+
+<body class="bg-bgDark bg-radial text-white font-display min-h-screen">
+<header
+      class="sticky top-0 z-50 w-full border-b border-accent-dark bg-background-dark/95 backdrop-blur-md"
+    >
+      <div
+        class="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between"
+      >
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 text-primary"></div>
+          <h1 class="text-white font-bold text-xl tracking-tight">
+            Connect <span class="text-primary font-white">+</span>
+          </h1>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="home.html"
+            class="text-white hover:text-primary text-sm font-bold transition-colors">
+            Home
+          </a>
+
+          <a href="cultura.html"
+            class="text-white/60 hover:text-white text-sm font-medium transition-colors">
+            Cultura e Inclusão
+          </a>
+
+          <a href="impacto.html"
+            class="text-white/60 hover:text-white text-sm font-medium transition-colors">
+            Impacto Social
+          </a>
+
+          <a href="beneficios.html"
+            class="text-white/60 hover:text-white text-sm font-medium transition-colors">
+            Benefícios
+          </a>
+
+          <a href="bemestar.html"
+            class="text-white/60 hover:text-white text-sm font-medium transition-colors">
+            Bem-estar
+          </a>
+
+          <a href="rankImpacto.html"
+            class="text-white/60 hover:text-white text-sm font-medium transition-colors">
+            Ranking
+          </a>
+
+          <!-- NOVO ITEM -->
+          <a href="https://ilhas-colaboradores-4uo8.vercel.app/"
+            class="text-white/60 hover:text-white text-sm font-medium transition-colors">
+            Ilhas
+          </a>
+        </nav>
+
+        <div class="flex items-center gap-4">
+          <div class="h-8 w-[1px] bg-white/10 mx-1"></div>
+          <div class="flex flex-col items-end mr-2 hidden sm:flex">
+            <span class="text-xs text-primary font-semibold">Nível 1</span>
+            <span class="text-sm font-bold text-white">Impact Beginner</span>
+          </div>
+
+          <div
+            class="h-10 w-10 rounded-full border-2 border-primary p-0.5 cursor-pointer hover:scale-105 transition-transform relative group"
+          >
+            <img
+              alt="User avatar profile picture"
+              class="rounded-full h-full w-full object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmLEDCVKSMWIIehwQRQQJEgraKhy88pxiSgDn8TWAeKkqMWGhNPX9i-hI5Wpxn7jrLPk2DrdEF1ffBjMuWPuTk5k6TKFGP54nKHjZVMTSfYpANUlM24tncQw4SlEmf5L7WeZV73dBmj5qfeXaxkG7dqS62DGWK9UN8FHP3hHSoop2VxaklDTlh_0p1-YyZ8II8mZfh_zssqKxxB1ZteBhDnaKZP4bnbQpkGhLGAo-SX_hQwwh0yKVPSxtheZlTDEOVJj6Xvb6ECxU"
+            />
+            <div
+              class="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-black"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+<main class="max-w-[1000px] mx-auto px-6 py-12">
+  <section class="glass-card red-glow rounded-[2rem] p-8 mb-8">
+    <span class="inline-flex px-3 py-1 mb-3 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase">
+      Customer Success
+    </span>
+    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Onboarding — CSS (Customer Success)</h2>
+    <p class="text-zinc-400 mt-2">
+      Ferramentas, cursos, onboarding e links úteis da área.
+    </p>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <div class="glass-card rounded-[2rem] p-7">
+      <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary">school</span>
+        Cursos para se especializar
+      </h3>
+      <ul class="space-y-3 text-white/80 text-sm">
+        <li>
+          <a href="https://mylearn.oracle.com/ou/learning-path/ai-for-you-training-and-assessment/152600"
+            target="_blank"
+            class="hover:text-primary transition-colors">
+            • AI for You
+          </a>
+        </li>
+
+        <li>
+          <a href="https://mylearn.oracle.com/ou/course/ai-foundation-for-oracle-cloud-applications/127296/"
+            target="_blank"
+            class="hover:text-primary transition-colors">
+            • AI Foundations for Oracle Applications
+          </a>
+        </li>
+
+        <li>
+          <a href="https://mylearn.oracle.com/ou/learning-path/oracle-fusion-ai-agent-studio-foundations-associate/151552"
+            target="_blank"
+            class="hover:text-primary transition-colors">
+            • Oracle AI Agent Studio for Fusion Applications Foundations
+          </a>
+        </li>
+
+        <li>
+          <a href="https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-professional-2025/147863"
+            target="_blank"
+            class="hover:text-primary transition-colors">
+            • Oracle Cloud Infrastructure Generative AI Professional
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="glass-card rounded-[2rem] p-7">
+      <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary">bookmarks</span>
+        Links úteis
+      </h3>
+      <ul class="space-y-3 text-sm">
+        <li><a class="underline text-white/90 hover:text-primary" href="https://oracle.sharepoint.com/sites/css-solutioning-lad" target="_blank" rel="noopener noreferrer">CSS Solutioning LAD (Share Point)</a></li>
+        <li><a class="underline text-white/90 hover:text-primary" href="https://epact.oraclecorp.com/siebel/app/sales/enu" target="_blank" rel="noopener noreferrer">ePACT</a></li>
+        <li><a class="underline text-white/90 hover:text-primary" href="https://einstein.oracle.com/apex/r/einstein/einstein/questions?domain=acs-gss&clear=RP%2C1&session=7010901192957" target="_blank" rel="noopener noreferrer">Einstein</a></li>
+        <li><a class="underline text-white/90 hover:text-primary" href="eeho.fa.us2.oraclecloud.com/fscmUI/redwood/service/ec?queryUuid=0699bc63-4b70-4acc-a18b-af92a5466bef" target="_blank" rel="noopener noreferrer">Sales Center</a></li>
+        <li><a class="underline text-white/90 hover:text-primary" href="https://acsapex.oraclecorp.com/apex/f?p=ACSSALES:HOME:112241601591257:::::" target="_blank" rel="noopener noreferrer">CSS Story Center</a></li>
+        <li><a class="underline text-white/90 hover:text-primary" href="https://www.oracle.com/assets/adv-customer-support-service-desc-3758596.pdf" target="_blank" rel="noopener noreferrer">Service Description</a></li>
+      </ul>
+    </div>
+
+        <!-- ONBOARDING DA ÁREA (COM BOTÃO) -->
+    <div class="glass-card rounded-[2rem] p-7">
+      <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary">checklist</span>
+        Onboarding da área (exemplo)
+      </h3>
+
+      <!-- Botão para linkar o onboarding oficial -->
+      <div class="mt-6">
+        <a
+          href="https://apex.oraclecorp.com/pls/apex/f?p=31178:39:17329668763335:::39,RIR::&tz=-3:00"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 px-5 py-3 rounded-xl font-bold"
+        >
+          Acessar Onboarding Oficial
+          <span class="material-symbols-outlined">open_in_new</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="mt-16 py-10 border-t border-zinc-900 text-center text-xs text-zinc-500">
+  © 2025 Oracle Corporate Onboarding
+</footer>
+</body>
+</html>

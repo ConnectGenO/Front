@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Connect+ — Dashboard Executivo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Se quiser manter seu arquivo -->
+  <!-- <link rel="stylesheet" href="css/style.css"> -->
+
+  <!-- Chart.js (gráficos mockados) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --shadow:0 6px 18px rgba(15, 23, 42, .06);
+      --radius:14px;
+      --blue:#2563eb;
+      --blue2:#60a5fa;
+      --green:#16a34a;
+      --red:#dc2626;
+      --amber:#f59e0b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:var(--bg);
+    }
+
+    /* Topbar */
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      max-width:1200px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 18px;
+      gap:16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:14px; min-width:240px;
+    }
+    .oracle{
+      font-weight:800; letter-spacing:.08em;
+      color:#e11d48; /* vermelho próximo */
+    }
+    .title{
+      font-weight:700;
+      color:#0b1220;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .right{
+      display:flex; align-items:center; gap:10px; color:var(--muted);
+      white-space:nowrap;
+    }
+    .avatar{
+      width:32px; height:32px; border-radius:999px;
+      border:1px solid var(--border);
+      display:grid; place-items:center;
+      background:#fff;
+    }
+
+    /* Layout */
+    .container{max-width:1200px; margin:0 auto; padding:18px;}
+    .toolbar{
+      display:flex; align-items:center; justify-content:flex-end; gap:10px;
+      margin-bottom:14px;
+    }
+    .btn{
+      border:1px solid var(--border);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .btn.primary{
+      background:#0b1220; color:#fff; border-color:#0b1220;
+    }
+
+    /* KPI cards */
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:14px;
+      margin-bottom:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:14px 14px 12px;
+      position:relative;
+      min-height:92px;
+    }
+    .card .label{
+      font-size:12px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#374151;
+      font-weight:700;
+      margin-bottom:8px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+    }
+    .icon-dot{
+      width:10px;height:10px;border-radius:999px;background:var(--border);
+      display:inline-block;
+    }
+    .metric{
+      font-size:30px;
+      font-weight:800;
+      line-height:1.1;
+      margin-bottom:6px;
+    }
+    .sub{
+      font-size:12px;
+      color:var(--muted);
+      display:flex; align-items:center; gap:6px;
+    }
+    .up{ color:var(--green); font-weight:700; }
+    .heart{
+      color:#ef4444;
+      font-size:14px;
+      transform: translateY(-1px);
+    }
+    .leaf{
+      color:var(--green);
+      font-weight:900;
+    }
+
+    /* Charts grid */
+    .grid{
+      display:grid;
+      grid-template-columns: 2fr 1fr;
+      gap:14px;
+      margin-bottom:14px;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: 2fr 1fr;
+      gap:14px;
+    }
+    .panel-title{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800;
+      margin:0 0 10px 0;
+    }
+    .panel-title .badge{
+      width:10px;height:10px;border-radius:999px;background:var(--red);
+      display:inline-block;
+    }
+    .panel-title .badge.blue{ background:var(--blue); }
+    .panel-title .badge.green{ background:var(--green); }
+
+    .canvas-wrap{height:240px;}
+    .canvas-wrap.sm{height:220px;}
+    .muted{color:var(--muted); font-size:12px; margin-top:6px;}
+
+    /* “Print mode” (mostrar imagem) */
+    .print-mode{
+      display:none;
+      margin-top:14px;
+    }
+    .print-mode img{
+      width:100%;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      background:#fff;
+    }
+
+    @media (max-width: 980px){
+      .kpis{grid-template-columns: repeat(2, 1fr);}
+      .grid, .grid2{grid-template-columns:1fr;}
+      .brand{min-width:auto}
+    }
+    @media (max-width: 520px){
+      .kpis{grid-template-columns: 1fr;}
+      .metric{font-size:26px;}
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="oracle">ORACLE</div>
+        <div class="title">Inteligência Organizacional - Connect+ Dashboard</div>
+      </div>
+      <div class="right">
+        <span>Vista: <b style="color:#0b1220;">Global Executive</b></span>
+        <div class="avatar" title="Usuário">👤</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="toolbar">
+      <button id="toggle-print" class="btn">Alternar: Print / Gráficos</button>
+      <button id="export-csv" class="btn primary">Exportar CSV (demo)</button>
+    </div>
+
+    <!-- KPI row -->
+    <section class="kpis" id="kpi-row">
+      <div class="card">
+        <div class="label">HORAS ATIVIDADE <span class="icon-dot" aria-hidden="true"></span></div>
+        <div class="metric" id="kpi-hours">12,450 h</div>
+        <div class="sub"><span class="up">↑ 5.2%</span> <span>vs mês anterior</span></div>
+      </div>
+
+      <div class="card">
+        <div class="label">ÍNDICE DE ENGAJAMENTO <span class="heart" title="Engajamento">♥</span></div>
+        <div class="metric" id="kpi-engagement">84/100</div>
+        <div class="sub"><span class="up">↑ 2.1 pts</span> <span>vs target</span></div>
+      </div>
+
+      <div class="card">
+        <div class="label">PROJETOS INTERNOS <span class="icon-dot" aria-hidden="true"></span></div>
+        <div class="metric" id="kpi-projects">342</div>
+        <div class="sub">— Estável</div>
+      </div>
+
+      <div class="card">
+        <div class="label">HORAS VOLUNTARIADO (ESG) <span class="leaf" title="ESG">⟡</span></div>
+        <div class="metric" id="kpi-esg">8,210 h</div>
+        <div class="sub"><span class="up">↑ 12%</span> <span>Q3 Impact</span></div>
+      </div>
+    </section>
+
+    <!-- Row 1 charts -->
+    <section class="grid" id="charts-mode">
+      <div class="card">
+        <h3 class="panel-title"><span class="badge blue"></span> Tendência de Mobilidade Interna vs Contratação Externa</h3>
+        <div class="canvas-wrap">
+          <canvas id="lineMobility"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="panel-title"><span class="badge"></span> Risco de Burnout (IA Preditiva)</h3>
+        <div class="canvas-wrap sm">
+          <canvas id="gaugeBurnout"></canvas>
+        </div>
+        <div class="muted">Baseado em horas extra, férias não tomadas e feedback.</div>
+      </div>
+    </section>
+
+    <!-- Row 2 charts -->
+    <section class="grid2" id="charts-mode-2">
+      <div class="card">
+        <h3 class="panel-title"><span class="badge blue"></span> Skills em Crescimento (Top 5)</h3>
+        <div class="canvas-wrap">
+          <canvas id="barSkills"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="panel-title"><span class="badge green"></span> Onboarding ciclo de vida (30 dias)</h3>
+        <div class="canvas-wrap sm">
+          <canvas id="donutOnboarding"></canvas>
+        </div>
+        <div class="muted">
+          <span style="margin-right:10px;">● On Track</span>
+          <span style="margin-right:10px;">● Retrasado</span>
+          <span>● Risco</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Print mode (se você quiser usar a imagem em vez dos gráficos) -->
+    <section class="print-mode" id="print-mode">
+      <div class="card">
+        <h3 class="panel-title"><span class="badge blue"></span> Print do Dashboard</h3>
+        <!-- Troque o src pelo caminho do seu print real -->
+        <img src="assets/connectplus-dashboard.png" alt="Print do dashboard Connect+">
+        <div class="muted">Dica: coloque a imagem em <b>assets/connectplus-dashboard.png</b> (ou ajuste o caminho).</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // =========
+    // Mock data (pode trocar depois por localStorage/API)
+    // =========
+    const mocked = {
+      kpis: {
+        hours: 12450,
+        hoursDelta: 5.2,
+        engagement: 84,
+        engagementDelta: 2.1,
+        projects: 342,
+        esgHours: 8210,
+        esgDelta: 12
+      },
+      mobility: {
+        labels: ["Ene","Feb","Mar","Abr","May","Jun"],
+        internal: [28, 34, 42, 46, 55, 62],
+        external: [68, 64, 58, 54, 48, 44]
+      },
+      burnout: {
+        value: 68 // %
+      },
+      skills: [
+        { name: "DevSecOps", value: 58 },
+        { name: "Sostenibilidad", value: 64 },
+        { name: "Liderazgo Ágil", value: 76 },
+        { name: "Data Science", value: 85 },
+        { name: "Cloud Native", value: 92 }
+      ],
+      onboarding: {
+        onTrack: 72,
+        delayed: 18,
+        risk: 10
+      }
+    };
+
+    // =========
+    // Helpers
+    // =========
+    function formatNumber(n){
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // (Opcional) mescla com cp_state, se você quiser reaproveitar seu localStorage
+    function mergeWithLocalState(){
+      try{
+        const state = JSON.parse(localStorage.getItem("cp_state") || "{}");
+        // exemplo: se existir state.adminKpis, sobrescreve
+        if (state.adminKpis) {
+          return { ...mocked, kpis: { ...mocked.kpis, ...state.adminKpis } };
+        }
+      }catch(e){}
+      return mocked;
+    }
+
+    const data = mergeWithLocalState();
+
+    // =========
+    // KPI render
+    // =========
+    document.getElementById("kpi-hours").textContent = `${formatNumber(data.kpis.hours)} h`;
+    document.getElementById("kpi-engagement").textContent = `${data.kpis.engagement}/100`;
+    document.getElementById("kpi-projects").textContent = `${formatNumber(data.kpis.projects)}`;
+    document.getElementById("kpi-esg").textContent = `${formatNumber(data.kpis.esgHours)} h`;
+
+    // =========
+    // Charts
+    // =========
+    // Linha: Mobilidade interna vs externa
+    new Chart(document.getElementById("lineMobility"), {
+      type: "line",
+      data: {
+        labels: data.mobility.labels,
+        datasets: [
+          {
+            label: "Mobilidade Interna",
+            data: data.mobility.internal,
+            tension: 0.35,
+            borderWidth: 2,
+            pointRadius: 3
+          },
+          {
+            label: "Contratação Externa",
+            data: data.mobility.external,
+            tension: 0.35,
+            borderWidth: 2,
+            borderDash: [6, 6],
+            pointRadius: 3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "bottom" },
+          tooltip: { enabled: true }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: "#eef2f7" }
+          },
+          x: {
+            grid: { display: false }
+          }
+        }
+      }
+    });
+
+    // Gauge: Burnout (semi-donut)
+    const burnoutValue = Math.max(0, Math.min(100, data.burnout.value));
+    const gauge = new Chart(document.getElementById("gaugeBurnout"), {
+      type: "doughnut",
+      data: {
+        labels: ["Risco", "Restante"],
+        datasets: [{
+          data: [burnoutValue, 100 - burnoutValue],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "70%",
+        rotation: -90,
+        circumference: 180,
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: false }
+        }
+      },
+      plugins: [{
+        id: "centerText",
+        afterDraw(chart){
+          const { ctx } = chart;
+          const meta = chart.getDatasetMeta(0);
+          if (!meta || !meta.data || !meta.data[0]) return;
+
+          const x = chart.getDatasetMeta(0).data[0].x;
+          const y = chart.getDatasetMeta(0).data[0].y;
+
+          ctx.save();
+          ctx.textAlign = "center";
+          ctx.fillStyle = "#0b1220";
+
+          ctx.font = "800 28px Inter";
+          ctx.fillText(`${burnoutValue}%`, x, y + 10);
+
+          ctx.font = "600 12px Inter";
+          ctx.fillStyle = "#6b7280";
+          ctx.fillText("Nivel de Riesgo", x, y + 34);
+          ctx.restore();
+        }
+      }]
+    });
+
+    // Barras horizontais: Skills
+    new Chart(document.getElementById("barSkills"), {
+      type: "bar",
+      data: {
+        labels: data.skills.map(s => s.name),
+        datasets: [{
+          label: "Crescimento (%)",
+          data: data.skills.map(s => s.value),
+          borderWidth: 0,
+          borderRadius: 10,
+          barThickness: 16
+        }]
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => ` +${ctx.parsed.x}%`
+            }
+          }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 100,
+            grid: { color: "#eef2f7" },
+            ticks: {
+              callback: (v) => `${v}%`
+            }
+          },
+          y: {
+            grid: { display: false }
+          }
+        }
+      }
+    });
+
+    // Donut: Onboarding
+    new Chart(document.getElementById("donutOnboarding"), {
+      type: "doughnut",
+      data: {
+        labels: ["On Track", "Retrasado", "Risco"],
+        datasets: [{
+          data: [data.onboarding.onTrack, data.onboarding.delayed, data.onboarding.risk],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "72%",
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    // =========
+    // Toggle Print x Gráficos
+    // =========
+    const btnToggle = document.getElementById("toggle-print");
+    const charts1 = document.getElementById("charts-mode");
+    const charts2 = document.getElementById("charts-mode-2");
+    const printMode = document.getElementById("print-mode");
+
+    let showingPrint = false;
+    btnToggle.addEventListener("click", () => {
+      showingPrint = !showingPrint;
+      charts1.style.display = showingPrint ? "none" : "grid";
+      charts2.style.display = showingPrint ? "none" : "grid";
+      printMode.style.display = showingPrint ? "block" : "none";
+    });
+
+    // =========
+    // Export CSV (demo)
+    // =========
+    document.getElementById("export-csv").addEventListener("click", () => {
+      alert("Exportação demo — implemente integração real no backend.");
+    });
+  </script>
+</body>
+</html>
