@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ilhas de Aprendizado</title>
+  <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🏝️</div>
+      <div>
+        <div class="title">Ilhas de Aprendizado</div>
+        <div class="subtitle">Cada curso concluído desbloqueia um item visual na ilha</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="btnReset" class="btn btn-ghost" title="Apaga progresso (localStorage)">
+        Reset progresso
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- DASHBOARD ADMIN -->
+    <section id="screenAdmin" class="hidden">
+      <div class="row wrap">
+        <label class="label">Selecionar setor</label>
+        <select id="sectorPickerAdmin" class="select"></select>
+      </div>
+
+      <div class="row">
+        <div>
+          <h2 id="adminHello">Admin</h2>
+          <p class="muted">Você vê apenas usuários do seu setor e as ilhas do estagiário selecionado.</p>
+        </div>
+        <div class="pill" id="adminPill"></div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>👥 Usuários do setor</h3>
+          <p class="muted">Selecione um estagiário para ver as ilhas e itens desbloqueados.</p>
+
+          <label class="label">Estagiário</label>
+          <select id="adminInternPicker" class="select"></select>
+
+          <div id="adminUserList" class="admin-users" style="margin-top:12px;"></div>
+        </div>
+
+        <div class="card">
+          <h3>🏝️ Ilhas do estagiário</h3>
+          <p class="muted">Carrossel (somente leitura): 1 ilha por vez.</p>
+
+          <div class="carousel">
+            <button id="carouselPrev" class="carousel-btn" aria-label="Anterior">⬅️</button>
+
+            <div id="adminInternIslands" class="carousel-track"></div>
+
+            <button id="carouselNext" class="carousel-btn" aria-label="Próxima">➡️</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <!-- <span class="muted">Demo estática (HTML/CSS/JS + JSON) — ideal pra Vercel</span> -->
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>

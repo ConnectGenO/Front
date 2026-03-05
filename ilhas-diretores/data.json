@@ -1,0 +1,52 @@
+{
+  "sectors": [
+    {
+      "id": "finance",
+      "name": "OnBoarding",
+      "theme": "finance",
+      "image": "imgs/island-preto.png",
+      "courses": [
+        { "id": "fin-1", "title": "Contabilidade", "image": "imgs/on-1.png", "pos": { "x": 50, "y": 50 } },
+        { "id": "fin-2", "title": "Orçamento", "image": "imgs/on-2.png", "pos": { "x": 54, "y": 35 } },
+        { "id": "fin-3", "title": "Custos", "image": "imgs/on-3.png", "pos": { "x": 30, "y": 40 } },
+        { "id": "fin-4", "title": "KPIs", "image": "imgs/on-4.png", "pos": { "x": 70, "y": 40 } },
+        { "id": "fin-5", "title": "Compliance", "image": "imgs/on-5.png", "pos": { "x": 40, "y": 28 } }
+      ]
+    },
+    {
+      "id": "beneficios",
+      "name": "Cerficações",
+      "theme": "beneficios",
+      "image": "imgs/island-azulescuro.png",
+      "courses": [
+        { "id": "bene-1", "title": "Segurança", "image": "imgs/bene-1.png", "pos": { "x": 50, "y": 50 } },
+        { "id": "bene-2", "title": "Git ", "image": "imgs/bene-2.png", "pos": { "x": 50, "y": 30 } },
+        { "id": "bene-4", "title": "APIs ", "image": "imgs/bene-4.png", "pos": { "x": 70, "y": 40 } },
+        { "id": "bene-5", "title": "Cloud ", "image": "imgs/bene-5.png", "pos": { "x": 30, "y": 40 } }
+      ]
+    },
+    {
+      "id": "it",
+      "name": "Benefícios",
+      "theme": "it",
+      "image": "imgs/island-verde.png",
+      "courses": [
+        { "id": "it-1", "title": "Vale Alimentação", "image": "imgs/it-1.png", "pos": { "x": 50, "y": 50 } },
+        { "id": "it-2", "title": "Plano de Saúde", "image": "imgs/it-2.png", "pos": { "x": 54, "y": 35 } },
+        { "id": "it-3", "title": "Auxílio Educação", "image": "imgs/it-3.png", "pos": { "x": 30, "y": 40 } },
+        { "id": "it-4", "title": "Previdência Privada", "image": "imgs/it-4.png", "pos": { "x": 70, "y": 40 } },
+        { "id": "bene-3", "title": "Vale Transporte", "image": "imgs/bene-3.png", "pos": { "x": 40, "y": 30 } }
+      ]
+    }
+  ],
+  "users": [
+    { "id": "u-ana", "name": "Ana", "role": "intern", "sectorId": "finance" },
+    { "id": "u-bruno", "name": "Bruno", "role": "intern", "sectorId": "finance" },
+    { "id": "u-carla", "name": "Carla", "role": "intern", "sectorId": "beneficios" },
+    { "id": "u-diego", "name": "Diego", "role": "intern", "sectorId": "it" },
+
+    { "id": "a-fin", "name": "Admin Finanças", "role": "admin", "sectorId": "finance" },
+    { "id": "a-hr", "name": "Admin RH", "role": "admin", "sectorId": "beneficios" },
+    { "id": "a-it", "name": "Admin TI", "role": "admin", "sectorId": "it" }
+  ]
+}
