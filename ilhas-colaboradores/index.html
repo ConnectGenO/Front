@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ilhas de Aprendizado</title>
+  <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🏝️</div>
+      <div>
+        <div class="title">Ilhas de Aprendizado</div>
+        <div class="subtitle">Cada curso concluído desbloqueia um item visual na ilha</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="btnReset" class="btn btn-ghost" title="Apaga progresso (localStorage)">
+        Reset progresso
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- DASHBOARD ESTAGIÁRIO -->
+    <section id="screenIntern">
+      <div class="row">
+        <div>
+          <h2 id="internHello">Estagiário</h2>
+          <p class="muted">Clique em “Concluir” para liberar o item na ilha.</p>
+        </div>
+        <div class="pill" id="internPill"></div>
+      </div>
+
+      <div id="islands" class="islands"></div>
+
+      <div class="card">
+        <h3>📚 Cursos do setor selecionado</h3>
+        <p class="muted">Escolha uma ilha e conclua cursos para ver os itens aparecendo.</p>
+
+        <div class="row wrap">
+          <label class="label">Ilha</label>
+          <select id="sectorPicker" class="select small"></select>
+        </div>
+
+        <div id="courseList" class="course-list"></div>
+      </div>
+    </section>
+
+    <!-- Modal de Quiz -->
+    <div id="quizModal" class="modal hidden">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="quizTitle">Quiz: Verificação de Conhecimento</h3>
+          <button id="closeQuiz" class="btn-close">&times;</button>
+        </div>
+        <div id="quizContent"></div>
+        <div class="modal-footer">
+          <button id="prevQuestion" class="btn btn-ghost" disabled>Anterior</button>
+          <button id="nextQuestion" class="btn btn-primary">Próxima</button>
+          <button id="finishQuiz" class="btn btn-primary hidden">Finalizar Quiz</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <!-- <span class="muted">Demo estática (HTML/CSS/JS + JSON) — ideal pra Vercel</span> -->
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
