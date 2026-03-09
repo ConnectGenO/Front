@@ -12,7 +12,7 @@
       <div class="logo">🏝️</div>
       <div>
         <div class="title">Ilhas de Aprendizado</div>
-        <div class="subtitle">Cada curso concluído desbloqueia um item visual na ilha</div>
+        <div class="subtitle">Quizzes e uploads de certificados liberam itens visuais na ilha</div>
       </div>
     </div>
 
@@ -24,12 +24,11 @@
   </header>
 
   <main class="container">
-    <!-- DASHBOARD ESTAGIÁRIO -->
     <section id="screenIntern">
       <div class="row">
         <div>
           <h2 id="internHello">Estagiário</h2>
-          <p class="muted">Clique em “Concluir” para liberar o item na ilha.</p>
+          <p class="muted">Conclua quizzes ou envie certificados para liberar os itens na ilha.</p>
         </div>
         <div class="pill" id="internPill"></div>
       </div>
@@ -37,8 +36,8 @@
       <div id="islands" class="islands"></div>
 
       <div class="card">
-        <h3>📚 Cursos do setor selecionado</h3>
-        <p class="muted">Escolha uma ilha e conclua cursos para ver os itens aparecendo.</p>
+        <h3>📚 Trilhas do setor selecionado</h3>
+        <p class="muted">Escolha uma ilha, avance nas etapas e acompanhe o progresso visual.</p>
 
         <div class="row wrap">
           <label class="label">Ilha</label>
@@ -49,28 +48,53 @@
       </div>
     </section>
 
-    <!-- Modal de Quiz -->
     <div id="quizModal" class="modal hidden">
       <div class="modal-backdrop"></div>
       <div class="modal-content">
         <div class="modal-header">
           <h3 id="quizTitle">Quiz: Verificação de Conhecimento</h3>
-          <button id="closeQuiz" class="btn-close">&times;</button>
+          <button id="closeQuiz" class="btn-close" aria-label="Fechar">&times;</button>
         </div>
         <div id="quizContent"></div>
-        <div class="modal-footer">
-          <button id="prevQuestion" class="btn btn-ghost" disabled>Anterior</button>
-          <button id="nextQuestion" class="btn btn-primary">Próxima</button>
-          <button id="finishQuiz" class="btn btn-primary hidden">Finalizar Quiz</button>
+        <div class="modal-footer single-action">
+          <button id="quizPrimary" class="btn btn-primary">Finalizar Quiz</button>
         </div>
       </div>
     </div>
 
-  </main>
+    <div id="uploadModal" class="modal hidden">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="uploadTitle">Upload de certificado</h3>
+          <button id="closeUpload" class="btn-close" aria-label="Fechar">&times;</button>
+        </div>
 
-  <footer class="footer">
-    <!-- <span class="muted">Demo estática (HTML/CSS/JS + JSON) — ideal pra Vercel</span> -->
-  </footer>
+        <div class="upload-box">
+          <div class="upload-intro">
+            <div class="upload-course" id="uploadCourseName"></div>
+            <p class="muted" id="uploadHint"></p>
+          </div>
+
+          <div class="field-group">
+            <label class="label" for="certificateFile">Arquivo do certificado</label>
+            <input id="certificateFile" class="input" type="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg" />
+          </div>
+
+          <div class="field-group">
+            <label class="label" for="certificateNote">Observações (opcional)</label>
+            <textarea id="certificateNote" class="textarea" rows="4" placeholder="Ex.: certificado concluído pela Oracle University"></textarea>
+          </div>
+
+          <div id="uploadHistory" class="upload-history"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="saveUpload" class="btn btn-primary">Enviar certificado</button>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <script src="./app.js"></script>
 </body>

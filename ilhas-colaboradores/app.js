@@ -1,11 +1,14 @@
 // ================================
 // LocalStorage (banco simples)
 // ================================
-const LS_KEY = "ilha_progresso_v1";
+const LS_KEY = "ilha_progresso_v2";
 
 function loadProgress() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
-  catch { return {}; }
+  try {
+    return JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+  } catch {
+    return {};
+  }
 }
 function saveProgress(p) { localStorage.setItem(LS_KEY, JSON.stringify(p)); }
 function resetProgress() { localStorage.removeItem(LS_KEY); }
@@ -17,17 +20,39 @@ let DB = null;
 let currentUser = null; // {id, name, role, sectorId}
 let progress = loadProgress();
 
+let currentQuiz = null;
+let currentCourseId = null;
+let userAnswers = [];
+let quizFinished = false;
+let lastQuizPassed = false;
+
+let currentUploadCourseId = null;
+
 // ================================
 // DOM
 // ================================
 const btnReset = document.getElementById("btnReset");
-
-// Intern
 const islandsEl = document.getElementById("islands");
 const sectorPicker = document.getElementById("sectorPicker");
 const courseList = document.getElementById("courseList");
 const internHello = document.getElementById("internHello");
 const internPill = document.getElementById("internPill");
+
+const quizModal = document.getElementById("quizModal");
+const quizTitle = document.getElementById("quizTitle");
+const quizContent = document.getElementById("quizContent");
+const quizPrimary = document.getElementById("quizPrimary");
+const closeQuiz = document.getElementById("closeQuiz");
+
+const uploadModal = document.getElementById("uploadModal");
+const uploadTitle = document.getElementById("uploadTitle");
+const uploadCourseName = document.getElementById("uploadCourseName");
+const uploadHint = document.getElementById("uploadHint");
+const uploadHistory = document.getElementById("uploadHistory");
+const certificateFile = document.getElementById("certificateFile");
+const certificateNote = document.getElementById("certificateNote");
+const saveUploadBtn = document.getElementById("saveUpload");
+const closeUpload = document.getElementById("closeUpload");
 
 // ================================
 // Init
@@ -35,15 +60,12 @@ const internPill = document.getElementById("internPill");
 async function init() {
   DB = await fetch("./data.json").then(r => r.json());
 
-  // Set default intern user (first intern: Ana)
   const interns = DB.users.filter(u => u.role === "intern");
   currentUser = interns[0];
 
-  // Initialize progress for the default user
-  if (!progress[currentUser.id]) progress[currentUser.id] = {};
+  ensureUserProgress(currentUser.id);
   saveProgress(progress);
 
-  // picker de setores (intern)
   sectorPicker.innerHTML = DB.sectors.map(s =>
     `<option value="${s.id}">${s.name}</option>`
   ).join("");
@@ -56,8 +78,7 @@ function bindEvents() {
   btnReset.addEventListener("click", () => {
     resetProgress();
     progress = loadProgress();
-    // Re-initialize progress for current user
-    if (!progress[currentUser.id]) progress[currentUser.id] = {};
+    ensureUserProgress(currentUser.id);
     saveProgress(progress);
     renderIntern();
   });
@@ -66,6 +87,122 @@ function bindEvents() {
     renderCoursesForSector(sectorPicker.value);
     renderInternIslands();
   });
+
+  closeQuiz.addEventListener("click", closeQuizModal);
+  quizPrimary.addEventListener("click", handleQuizPrimaryAction);
+
+  closeUpload.addEventListener("click", closeUploadModal);
+  saveUploadBtn.addEventListener("click", handleUploadSubmit);
+}
+
+// ================================
+// Helpers
+// ================================
+function ensureUserProgress(userId) {
+  if (!progress[userId]) progress[userId] = {};
+}
+
+function getCourseRecord(userId, courseId) {
+  return progress?.[userId]?.[courseId] ?? null;
+}
+
+function isDone(userId, courseId) {
+  const record = getCourseRecord(userId, courseId);
+  if (record === true) return true;
+  return Boolean(record?.done);
+}
+
+function completeCourse(userId, courseId, payload = {}) {
+  ensureUserProgress(userId);
+  progress[userId][courseId] = {
+    done: true,
+    completedAt: payload.completedAt || new Date().toISOString(),
+    ...payload
+  };
+  saveProgress(progress);
+}
+
+function countDoneCourses(userId, sector) {
+  return sector.courses.reduce((acc, course) => acc + (isDone(userId, course.id) ? 1 : 0), 0);
+}
+
+function sectorName(sectorId) {
+  const sector = DB?.sectors?.find(x => x.id === sectorId);
+  return sector ? sector.name : sectorId;
+}
+
+function findCourse(courseId) {
+  for (const sector of DB.sectors) {
+    const course = sector.courses.find(c => c.id === courseId);
+    if (course) return course;
+  }
+  return null;
+}
+
+function findSectorByCourse(courseId) {
+  return DB.sectors.find(sector => sector.courses.some(c => c.id === courseId)) || null;
+}
+
+function getCourseType(course) {
+  if (course.type) return course.type;
+  if (course.quiz) return "quiz";
+  return "upload";
+}
+
+function escapeHTML(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function formatDateTime(value) {
+  if (!value) return "";
+  try {
+    return new Date(value).toLocaleString("pt-BR", {
+      dateStyle: "short",
+      timeStyle: "short"
+    });
+  } catch {
+    return value;
+  }
+}
+
+function badgeText(course, done) {
+  const type = getCourseType(course);
+  if (done && type === "upload") return "Enviado";
+  if (done) return "Concluído";
+  return type === "upload" ? "Aguardando envio" : "Pendente";
+}
+
+function actionLabel(course, done) {
+  const type = getCourseType(course);
+  if (type === "upload") return done ? "Ver envio" : "Enviar certificado";
+  return done ? "OK" : "Fazer Quiz";
+}
+
+function buildRecordSummary(course, record) {
+  if (!record || record === true) return "";
+
+  if (record.type === "quiz") {
+    const scoreText = typeof record.score === "number" && typeof record.total === "number"
+      ? `Pontuação: ${record.score}/${record.total}`
+      : "Quiz concluído";
+    return `<div class="course-meta">${scoreText}${record.completedAt ? ` • ${formatDateTime(record.completedAt)}` : ""}</div>`;
+  }
+
+  if (record.type === "upload") {
+    return `
+      <div class="course-meta">
+        Arquivo: <b>${escapeHTML(record.fileName || "não informado")}</b>
+        ${record.uploadedAt ? ` • Enviado em ${formatDateTime(record.uploadedAt)}` : ""}
+      </div>
+    `;
+  }
+
+  return "";
 }
 
 // ================================
@@ -73,69 +210,20 @@ function bindEvents() {
 // ================================
 function renderIntern() {
   internHello.textContent = `Olá, ${currentUser.name} 👋`;
-  internPill.textContent = `Perfil: Estagiário • Setor: ${sectorName(currentUser.sectorId)}`;
+  internPill.textContent = `Perfil: Estagiário • Setor inicial: ${sectorName(currentUser.sectorId)}`;
 
   sectorPicker.value = currentUser.sectorId;
   renderInternIslands();
   renderCoursesForSector(sectorPicker.value);
 }
 
-// ================================
-// Regras de desbloqueio
-// ================================
-function isDone(userId, courseId) {
-  const done = Boolean(progress?.[userId]?.[courseId]);
-  console.log("isDone for", courseId, ":", done);
-  return done;
-}
-
-function completeCourse(userId, courseId) {
-  if (!progress[userId]) progress[userId] = {};
-  progress[userId][courseId] = true;
-  console.log("Set progress:", progress[userId]);
-  saveProgress(progress);
-}
-
-function countDoneCourses(userId, sector) {
-  const userProg = progress[userId] || {};
-  return sector.courses.reduce((acc, c) => acc + (userProg[c.id] ? 1 : 0), 0);
-}
-
-function sectorName(sectorId) {
-  const s = DB?.sectors?.find(x => x.id === sectorId);
-  return s ? s.name : sectorId;
-}
-
-// ================================
-// SVG base da ilha (reaproveitado)
-// ================================
-function islandSVG() {
-  return `
-    <svg class="island-svg" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0,45 C15,40 25,48 40,45 C55,42 65,50 80,46 C90,44 95,42 100,44 L100,60 L0,60 Z"
-            fill="rgba(93,124,255,.18)"/>
-      <path d="M0,48 C16,44 27,52 42,48 C57,45 67,54 82,49 C92,46 96,45 100,47 L100,60 L0,60 Z"
-            fill="rgba(50,210,150,.10)"/>
-      <path d="M18,44 C18,32 30,18 50,18 C70,18 82,32 82,44 C82,52 70,56 50,56 C30,56 18,52 18,44 Z"
-            fill="rgba(255, 224, 170, .35)" stroke="rgba(255,255,255,.10)" stroke-width="0.6"/>
-      <path d="M24,44 C24,35 34,24 50,24 C66,24 76,35 76,44 C76,49 66,52 50,52 C34,52 24,49 24,44 Z"
-            fill="rgba(93,124,255,.06)"/>
-      <path d="M30,40 C35,30 42,28 50,28 C58,28 65,30 70,40 C66,43 60,46 50,46 C40,46 34,43 30,40 Z"
-            fill="rgba(50,210,150,.16)"/>
-    </svg>
-  `;
-}
-
-// ================================
-// Render: Ilhas do ESTAGIÁRIO (todas)
-// ================================
 function renderInternIslands() {
   islandsEl.innerHTML = "";
 
   DB.sectors.forEach(sector => {
     const doneCount = countDoneCourses(currentUser.id, sector);
     const total = sector.courses.length;
-    const pct = Math.round((doneCount / total) * 100);
+    const pct = total ? Math.round((doneCount / total) * 100) : 0;
 
     const island = document.createElement("div");
     island.className = "island";
@@ -144,7 +232,7 @@ function renderInternIslands() {
       <div class="island-head">
         <div>
           <div class="island-name">🏝️ ${sector.name}</div>
-          <div class="island-mini">${doneCount}/${total} cursos concluídos • ${pct}%</div>
+          <div class="island-mini">${doneCount}/${total} etapas concluídas • ${pct}%</div>
         </div>
         <button class="btn btn-ghost" data-open="${sector.id}">Ver cursos</button>
       </div>
@@ -159,19 +247,18 @@ function renderInternIslands() {
           const unlocked = isDone(currentUser.id, course.id);
           const x = course.pos?.x ?? 50;
           const y = course.pos?.y ?? 45;
-          if (unlocked) console.log("Adding show pin for", course.id, "on sector", sector.id);
           return `
             <div class="pin ${unlocked ? "show" : ""}"
                  style="left:${x}%; top:${y}%;"
-                 title="${course.title}">
-              <img src="${course.image}" alt="${course.title}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;" />
+                 title="${escapeHTML(course.title)}">
+              <img src="${course.image}" alt="${escapeHTML(course.title)}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;" />
             </div>
           `;
         }).join("")}
       </div>
     `;
 
-    island.querySelector("[data-open]").addEventListener("click", (e) => {
+    island.querySelector("[data-open]").addEventListener("click", e => {
       const sectorId = e.currentTarget.getAttribute("data-open");
       sectorPicker.value = sectorId;
       renderCoursesForSector(sectorId);
@@ -182,143 +269,6 @@ function renderInternIslands() {
   });
 }
 
-
-
-// ================================
-// Quiz Logic
-// ================================
-let currentCourseId = null;
-
-const quizModal = document.getElementById("quizModal");
-const quizTitle = document.getElementById("quizTitle");
-const quizContent = document.getElementById("quizContent");
-const prevQuestion = document.getElementById("prevQuestion");
-const nextQuestion = document.getElementById("nextQuestion");
-const finishQuiz = document.getElementById("finishQuiz");
-const closeQuiz = document.getElementById("closeQuiz");
-
-let currentQuiz = null;
-let userAnswers = [];
-
-function openQuiz(courseId) {
-  const course = findCourse(courseId);
-  if (!course || !course.quiz) return;
-
-  currentCourseId = courseId;
-  currentQuiz = course.quiz;
-  userAnswers = new Array(currentQuiz.length).fill(null);
-
-  quizTitle.textContent = `Quiz: ${course.title}`;
-  renderQuiz();
-  quizModal.classList.remove("hidden");
-}
-
-function findCourse(courseId) {
-  for (let sector of DB.sectors) {
-    const c = sector.courses.find(c => c.id === courseId);
-    if (c) return c;
-  }
-  return null;
-}
-
-function renderQuiz() {
-  quizContent.innerHTML = currentQuiz.map((q, i) => `
-    <div class="quiz-question">
-      <h4>${i+1}. ${q.question}</h4>
-      <div class="quiz-options">
-        ${q.options.map((opt, j) => `
-          <label>
-            <input type="radio" name="q${i}" value="${j}" ${userAnswers[i] === j ? 'checked' : ''}>
-            ${opt}
-          </label>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
-
-  // Bind radio changes
-  document.querySelectorAll('input[type="radio"]').forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      const qIndex = parseInt(e.target.name.slice(1));
-      userAnswers[qIndex] = parseInt(e.target.value);
-    });
-  });
-
-  // Reset buttons
-  nextQuestion.textContent = "Finalizar Quiz";
-  nextQuestion.classList.remove("hidden");
-  finishQuiz.classList.add("hidden");
-  prevQuestion.disabled = true;
-}
-
-function calculateScore() {
-  let correct = 0;
-  currentQuiz.forEach((q, i) => {
-    if (userAnswers[i] === q.answer) correct++;
-  });
-  return correct;
-}
-
-function closeModal() {
-  quizModal.classList.add("hidden");
-  currentQuiz = null;
-  userAnswers = [];
-  currentCourseId = null;
-}
-
-function handleFinishQuiz() {
-  const score = calculateScore();
-  const passed = score >= 2; // At least 2/3 correct (66.7%, close to 70%)
-
-  console.log("Quiz score:", score, "passed:", passed);
-
-  quizContent.innerHTML = `
-    <div class="result-message ${passed ? 'success' : 'fail'}">
-      <h3>${passed ? 'Parabéns!' : 'Tente novamente'}</h3>
-      <p>Você acertou ${score}/${currentQuiz.length} perguntas.</p>
-      ${passed ? '<p>Seu conhecimento foi verificado. Curso concluído!</p>' : '<p>Você precisa acertar pelo menos 70% para concluir o curso.</p>'}
-    </div>
-  `;
-
-  nextQuestion.textContent = "Fechar";
-  nextQuestion.onclick = () => {
-    if (passed) {
-      // Find the sector of the completed course and switch to it
-      let completedSectorId = null;
-      for (let sector of DB.sectors) {
-        if (sector.courses.some(c => c.id === currentCourseId)) {
-          completedSectorId = sector.id;
-          break;
-        }
-      }
-      if (completedSectorId) {
-        sectorPicker.value = completedSectorId;
-        console.log("Switched to sector:", completedSectorId);
-      }
-
-      console.log("Completing course:", currentCourseId);
-      completeCourse(currentUser.id, currentCourseId);
-      console.log("Progress after complete:", progress);
-      renderCoursesForSector(sectorPicker.value);
-      renderInternIslands();
-      console.log("Re-rendered");
-    }
-    closeModal();
-  };
-  prevQuestion.disabled = true;
-  finishQuiz.classList.add("hidden");
-}
-
-// Bind modal events
-closeQuiz.addEventListener("click", closeModal);
-nextQuestion.addEventListener("click", handleFinishQuiz);
-prevQuestion.addEventListener("click", () => {
-  // If implementing one-by-one, prev logic here
-});
-
-// ================================
-// Modify complete button to open quiz
-// ================================
 function renderCoursesForSector(sectorId) {
   const sector = DB.sectors.find(s => s.id === sectorId);
   if (!sector) return;
@@ -326,37 +276,221 @@ function renderCoursesForSector(sectorId) {
   courseList.innerHTML = "";
 
   sector.courses.forEach(course => {
+    const type = getCourseType(course);
     const done = isDone(currentUser.id, course.id);
+    const record = getCourseRecord(currentUser.id, course.id);
 
     const row = document.createElement("div");
     row.className = "course";
     row.innerHTML = `
-      <div style="display:flex; align-items:center; gap:8px;">
-        <img src="${course.image}" alt="${course.title}" style="width:20px; height:20px; border-radius:50%; object-fit:cover;">
-        <div>
-          <div class="course-title">${course.title}</div>
-          <div class="muted" style="font-size:12px">Curso: <b>${course.id}</b></div>
+      <div class="course-main">
+        <div style="display:flex; align-items:flex-start; gap:10px;">
+          <img src="${course.image}" alt="${escapeHTML(course.title)}" style="width:28px; height:28px; border-radius:50%; object-fit:cover; margin-top:2px;">
+          <div>
+            <div class="course-title">${course.title}</div>
+            <div class="muted" style="font-size:12px">Código: <b>${course.id}</b> • Tipo: <b>${type === "upload" ? "Upload" : "Quiz"}</b></div>
+            ${course.description ? `<div class="course-desc">${course.description}</div>` : ""}
+            ${buildRecordSummary(course, record)}
+            ${Array.isArray(course.recommendedCourses) && course.recommendedCourses.length ? `
+              <ul class="helper-list">
+                ${course.recommendedCourses.map(item => `<li>${item}</li>`).join("")}
+              </ul>
+            ` : ""}
+          </div>
         </div>
       </div>
 
-      <div style="display:flex; align-items:center; gap:10px;">
-        <span class="badge ${done ? "done" : ""}">${done ? "Concluído" : "Pendente"}</span>
-        <button class="btn ${done ? "btn-ghost" : "btn-primary"}" ${done ? "disabled" : ""}>
-          ${done ? "OK" : "Fazer Quiz"}
+      <div class="course-actions">
+        <span class="badge ${done ? "done" : ""}">${badgeText(course, done)}</span>
+        ${course.coursePageUrl ? `<a class="btn btn-ghost" href="${course.coursePageUrl}" target="_blank" rel="noopener">Cursos online</a>` : ""}
+        <button class="btn ${done && type !== "upload" ? "btn-ghost" : "btn-primary"}" ${done && type !== "upload" ? "disabled" : ""}>
+          ${actionLabel(course, done)}
         </button>
       </div>
     `;
 
-    row.querySelector("button").addEventListener("click", () => {
-      if (!done) {
-        openQuiz(course.id);
+    const actionButton = row.querySelector("button");
+    actionButton.addEventListener("click", () => {
+      if (type === "upload") {
+        openUploadModal(course.id);
+        return;
       }
+      if (!done) openQuiz(course.id);
     });
 
     courseList.appendChild(row);
   });
 }
 
+// ================================
+// Quiz modal
+// ================================
+function openQuiz(courseId) {
+  const course = findCourse(courseId);
+  if (!course || !course.quiz) return;
 
+  currentCourseId = courseId;
+  currentQuiz = course.quiz;
+  userAnswers = new Array(currentQuiz.length).fill(null);
+  quizFinished = false;
+  lastQuizPassed = false;
+
+  quizTitle.textContent = `Quiz: ${course.title}`;
+  renderQuiz();
+  quizModal.classList.remove("hidden");
+}
+
+function renderQuiz() {
+  quizContent.innerHTML = currentQuiz.map((q, i) => `
+    <div class="quiz-question">
+      <h4>${i + 1}. ${q.question}</h4>
+      <div class="quiz-options">
+        ${q.options.map((option, j) => `
+          <label>
+            <input type="radio" name="q${i}" value="${j}" ${userAnswers[i] === j ? "checked" : ""}>
+            ${option}
+          </label>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+
+  document.querySelectorAll('#quizContent input[type="radio"]').forEach(radio => {
+    radio.addEventListener("change", event => {
+      const qIndex = Number(event.target.name.slice(1));
+      userAnswers[qIndex] = Number(event.target.value);
+    });
+  });
+
+  quizPrimary.textContent = "Finalizar Quiz";
+}
+
+function calculateScore() {
+  let correct = 0;
+  currentQuiz.forEach((question, index) => {
+    if (userAnswers[index] === question.answer) correct += 1;
+  });
+  return correct;
+}
+
+function handleQuizPrimaryAction() {
+  if (quizFinished) {
+    if (lastQuizPassed) {
+      const sector = findSectorByCourse(currentCourseId);
+      if (sector) sectorPicker.value = sector.id;
+      renderCoursesForSector(sectorPicker.value);
+      renderInternIslands();
+    }
+    closeQuizModal();
+    return;
+  }
+
+  const score = calculateScore();
+  const total = currentQuiz.length;
+  const passed = score / total >= 0.7;
+  quizFinished = true;
+  lastQuizPassed = passed;
+
+  if (passed) {
+    completeCourse(currentUser.id, currentCourseId, {
+      type: "quiz",
+      score,
+      total,
+      completedAt: new Date().toISOString()
+    });
+  }
+
+  quizContent.innerHTML = `
+    <div class="result-message ${passed ? "success" : "fail"}">
+      <h3>${passed ? "Parabéns!" : "Tente novamente"}</h3>
+      <p>Você acertou <b>${score}/${total}</b> perguntas.</p>
+      <p>${passed ? "Seu conhecimento foi validado e a etapa foi concluída." : "Você precisa acertar pelo menos 70% para concluir esta etapa."}</p>
+    </div>
+  `;
+
+  quizPrimary.textContent = "Fechar";
+}
+
+function closeQuizModal() {
+  quizModal.classList.add("hidden");
+  currentQuiz = null;
+  currentCourseId = null;
+  userAnswers = [];
+  quizFinished = false;
+  lastQuizPassed = false;
+  quizPrimary.textContent = "Finalizar Quiz";
+}
+
+// ================================
+// Upload modal
+// ================================
+function openUploadModal(courseId) {
+  const course = findCourse(courseId);
+  if (!course) return;
+
+  currentUploadCourseId = courseId;
+  const record = getCourseRecord(currentUser.id, courseId);
+
+  uploadTitle.textContent = `Upload: ${course.title}`;
+  uploadCourseName.textContent = course.title;
+  uploadHint.textContent = course.uploadHint || "Envie o certificado concluído para registrar sua evolução nesta trilha.";
+  certificateFile.value = "";
+  certificateNote.value = record?.note || "";
+
+  if (record?.fileName) {
+    uploadHistory.innerHTML = `
+      <div class="upload-history-card">
+        <div><b>Último envio:</b> ${escapeHTML(record.fileName)}</div>
+        <div><b>Data:</b> ${formatDateTime(record.uploadedAt)}</div>
+        ${record.note ? `<div><b>Observação:</b> ${escapeHTML(record.note)}</div>` : ""}
+      </div>
+    `;
+  } else {
+    uploadHistory.innerHTML = `<div class="muted">Nenhum certificado enviado ainda.</div>`;
+  }
+
+  uploadModal.classList.remove("hidden");
+}
+
+function handleUploadSubmit() {
+  const course = findCourse(currentUploadCourseId);
+  if (!course) return;
+
+  const file = certificateFile.files?.[0];
+  if (!file) {
+    uploadHistory.innerHTML = `<div class="result-message fail"><p>Selecione um arquivo antes de enviar.</p></div>`;
+    return;
+  }
+
+  const uploadedAt = new Date().toISOString();
+  completeCourse(currentUser.id, currentUploadCourseId, {
+    type: "upload",
+    fileName: file.name,
+    fileSize: file.size,
+    mimeType: file.type,
+    note: certificateNote.value.trim(),
+    uploadedAt,
+    completedAt: uploadedAt
+  });
+
+  uploadHistory.innerHTML = `
+    <div class="result-message success">
+      <h3>Certificado enviado!</h3>
+      <p><b>${escapeHTML(file.name)}</b></p>
+      <p>Envio registrado em ${formatDateTime(uploadedAt)}.</p>
+      <p class="muted">Nesta versão estática, o navegador salva o status do envio e os metadados do arquivo.</p>
+    </div>
+  `;
+
+  renderCoursesForSector(sectorPicker.value);
+  renderInternIslands();
+}
+
+function closeUploadModal() {
+  uploadModal.classList.add("hidden");
+  currentUploadCourseId = null;
+  certificateFile.value = "";
+  certificateNote.value = "";
+}
 
 init();

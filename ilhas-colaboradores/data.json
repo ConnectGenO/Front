@@ -1,122 +1,195 @@
 {
   "sectors": [
     {
-      "id": "finance",
-      "name": "OnBoarding",
-      "theme": "finance",
+      "id": "OnBoarding",
+      "name": "OnBoarding de CSS",
+      "theme": "OnBoarding",
       "image": "imgs/island-preto.png",
       "courses": [
         {
-          "id": "fin-1",
-          "title": "Contabilidade",
+          "id": "OnB-1",
+          "title": "Recursos importantes da área",
           "image": "imgs/on-1.png",
           "pos": { "x": 50, "y": 50 },
           "quiz": [
             {
-              "question": "O que é contabilidade?",
-              "options": ["A. Registro de transações financeiras", "B. Planejamento de marketing", "C. Gerenciamento de estoque"],
+              "question": "Como solicitar acesso a algum recurso?",
+              "options": [
+                "A. No Oracle My Help Desk",
+                "B. Oracle My Help",
+                "C. No OIM"
+              ],
+              "answer": 2
+            },
+            {
+              "question": "Como encontrar todos os serviços da área de CSS?",
+              "options": [
+                "A. Solution Matrix",
+                "B. Sales Center",
+                "C. Service Description"
+              ],
               "answer": 0
             },
             {
-              "question": "Qual o principal objetivo da contabilidade?",
-              "options": ["A. Maximizar lucros", "B. Registrar e controlar patrimônio", "C. Vender produtos"],
-              "answer": 1
-            },
-            {
-              "question": "Balanço patrimonial mostra?",
-              "options": ["A. Lucros do período", "B. Situação financeira em um momento", "C. Fluxo de caixa diário"],
-              "answer": 1
+              "question": "Qual a ferramenta de cotação utilizada?",
+              "options": [
+                "A. ePACT",
+                "B. DAS",
+                "C. Q"
+              ],
+              "answer": 0
             }
           ]
         },
         {
-          "id": "fin-2",
-          "title": "Orçamento",
+          "id": "OnB-2",
+          "title": "Qual o principal objetivo do onboarding de css",
           "image": "imgs/on-2.png",
           "pos": { "x": 54, "y": 35 },
           "quiz": [
             {
-              "question": "O que é um orçamento empresarial?",
-              "options": ["A. Lista de despesas pessoais", "B. Plano financeiro para receitas e despesas", "C. Relatório de vendas"],
+              "question": "Ao ter uma dúvida sobre processos da área, qual deve ser a primeira atitude?",
+              "options": [
+                "A. Tentar resolver sem consultar ninguém",
+                "B. Ignorar a dúvida e seguir normalmente",
+                "C. Consultar os materiais oficiais, a trilha de onboarding ou o canal da área",
+                "D. Perguntar em qualquer grupo sem contexto"
+              ],
+              "answer": 2
+            },
+            {
+              "question": "Por que é importante concluir a trilha de onboarding antes de iniciar algumas atividades da área?",
+              "options": [
+                "A. Porque é uma formalidade sem impacto prático",
+                "B. Porque ajuda a entender contexto, responsabilidades e ferramentas essenciais",
+                "C. Porque substitui totalmente a experiência prática",
+                "D. Porque serve apenas para RH"
+              ],
               "answer": 1
             },
             {
-              "question": "Qual o benefício de um bom orçamento?",
-              "options": ["A. Aumentar dívidas", "B. Controlar gastos e planejar investimentos", "C. Ignorar receitas"],
+              "question": "Qual destas atitudes mais combina com o onboarding de uma área como CSS?",
+              "options": [
+                "A. Esperar alguém cobrar cada etapa",
+                "B. Explorar conteúdos, registrar dúvidas e buscar entender o fluxo da área",
+                "C. Pular módulos para terminar mais rápido",
+                "D. Fazer apenas o que for obrigatório"
+              ],
               "answer": 1
             },
-            {
-              "question": "Orçamento flexível ajusta-se a?",
-              "options": ["A. Mudanças no volume de produção", "B. Preços fixos", "C. Sem variações"],
-              "answer": 0
+                        {
+              "question": "O que deve ser feito após concluir um treinamento ou curso do onboarding?",
+              "options": [
+                "A. Apenas fechar a página",
+                "B. Guardar o aprendizado sem registrar nada",
+                "C. Registrar a conclusão e, quando aplicável, enviar ou subir o certificado",
+                "D. Repetir o curso várias vezes sem necessidade"
+              ],
+              "answer": 2
             }
           ]
         },
         {
-          "id": "fin-3",
-          "title": "Custos",
+          "id": "OnB-3",
+          "title": "Oracle AI Agent Studio for Fusion Applications Foundations",
           "image": "imgs/on-3.png",
           "pos": { "x": 30, "y": 40 },
           "quiz": [
             {
               "question": "Custos fixos são?",
-              "options": ["A. Variam com produção", "B. Permanecem constantes", "C. Apenas variáveis"],
+              "options": [
+                "A. Variam com produção",
+                "B. Permanecem constantes",
+                "C. Apenas variáveis"
+              ],
               "answer": 1
             },
             {
               "question": "Exemplo de custo variável?",
-              "options": ["A. Aluguel", "B. Matéria-prima", "C. Salário fixo"],
+              "options": [
+                "A. Aluguel",
+                "B. Matéria-prima",
+                "C. Salário fixo"
+              ],
               "answer": 1
             },
             {
               "question": "Por que controlar custos?",
-              "options": ["A. Aumentar desperdícios", "B. Melhorar lucratividade", "C. Ignorar eficiência"],
+              "options": [
+                "A. Aumentar desperdícios",
+                "B. Melhorar lucratividade",
+                "C. Ignorar eficiência"
+              ],
               "answer": 1
             }
           ]
         },
         {
-          "id": "fin-4",
-          "title": "KPIs",
+          "id": "OnB-4",
+          "title": "Oracle Cloud Infrastructure Generative AI Professional",
           "image": "imgs/on-4.png",
           "pos": { "x": 70, "y": 40 },
           "quiz": [
             {
               "question": "O que significa KPI?",
-              "options": ["A. Key Performance Indicator", "B. Key Profit Index", "C. Knowledge Process Input"],
+              "options": [
+                "A. Key Performance Indicator",
+                "B. Key Profit Index",
+                "C. Knowledge Process Input"
+              ],
               "answer": 0
             },
             {
               "question": "KPIs medem?",
-              "options": ["A. Desempenho de metas", "B. Clima organizacional", "C. Número de funcionários"],
+              "options": [
+                "A. Desempenho de metas",
+                "B. Clima organizacional",
+                "C. Número de funcionários"
+              ],
               "answer": 0
             },
             {
               "question": "Exemplo de KPI financeiro?",
-              "options": ["A. Taxa de rotatividade", "B. ROI (Retorno sobre Investimento)", "C. Satisfação do cliente"],
+              "options": [
+                "A. Taxa de rotatividade",
+                "B. ROI (Retorno sobre Investimento)",
+                "C. Satisfação do cliente"
+              ],
               "answer": 1
             }
           ]
         },
         {
-          "id": "fin-5",
+          "id": "OnB-5",
           "title": "Compliance",
           "image": "imgs/on-5.png",
           "pos": { "x": 40, "y": 28 },
           "quiz": [
             {
               "question": "Compliance significa?",
-              "options": ["A. Conformidade com leis e normas", "B. Competição agressiva", "C. Colaboração externa"],
+              "options": [
+                "A. Conformidade com leis e normas",
+                "B. Competição agressiva",
+                "C. Colaboração externa"
+              ],
               "answer": 0
             },
             {
               "question": "Por que é importante?",
-              "options": ["A. Evitar multas e riscos", "B. Aumentar custos desnecessários", "C. Ignorar regulamentações"],
+              "options": [
+                "A. Evitar multas e riscos",
+                "B. Aumentar custos desnecessários",
+                "C. Ignorar regulamentações"
+              ],
               "answer": 0
             },
             {
               "question": "Compliance no trabalho inclui?",
-              "options": ["A. Ética e transparência", "B. Segredos corporativos", "C. Violações intencionais"],
+              "options": [
+                "A. Ética e transparência",
+                "B. Segredos corporativos",
+                "C. Violações intencionais"
+              ],
               "answer": 0
             }
           ]
@@ -124,222 +197,226 @@
       ]
     },
     {
-      "id": "beneficios",
+      "id": "Cerficações",
       "name": "Cerficações",
-      "theme": "beneficios",
+      "theme": "certificações",
       "image": "imgs/island-azulescuro.png",
       "courses": [
         {
-          "id": "bene-1",
-          "title": "Segurança",
+          "id": "Cert-1",
+          "title": "AI for You",
+          "type": "upload",
+          "description": "Faça o upload do certificado concluído para registrar sua evolução na trilha.",
+          "uploadHint": "Selecione o certificado do curso AI for You em PDF, PNG ou JPG.",
           "image": "imgs/bene-1.png",
-          "pos": { "x": 50, "y": 50 },
-          "quiz": [
-            {
-              "question": "O que é segurança no trabalho?",
-              "options": ["A. Proteção contra riscos ocupacionais", "B. Marketing de segurança", "C. Treinamento irrelevante"],
-              "answer": 0
-            },
-            {
-              "question": "EPI significa?",
-              "options": ["A. Equipamento de Proteção Individual", "B. Estudo de Perigos Internos", "C. Exame de Pressão Interna"],
-              "answer": 0
-            },
-            {
-              "question": "Por que usar capacete?",
-              "options": ["A. Proteção contra quedas de objetos", "B. Estilo pessoal", "C. Aumentar peso"],
-              "answer": 0
-            }
-          ]
+          "pos": { "x": 50, "y": 50 }
         },
         {
-          "id": "bene-2",
-          "title": "Git ",
+          "id": "Cert-2",
+          "title": "AI Foundations for Oracle Applications",
+          "type": "upload",
+          "description": "Envie o comprovante de conclusão desta certificação para liberar o item na ilha.",
+          "uploadHint": "Faça o upload do certificado emitido após a conclusão do curso.",
           "image": "imgs/bene-2.png",
-          "pos": { "x": 50, "y": 30 },
-          "quiz": [
-            {
-              "question": "Git é?",
-              "options": ["A. Sistema de controle de versão", "B. Linguagem de programação", "C. Editor de texto"],
-              "answer": 0
-            },
-            {
-              "question": "Comando para clonar repositório?",
-              "options": ["A. git clone", "B. git push", "C. git merge"],
-              "answer": 0
-            },
-            {
-              "question": "Branch é?",
-              "options": ["A. Linha principal de código", "B. Ramificação para desenvolvimento", "C. Arquivo final"],
-              "answer": 1
-            }
-          ]
+          "pos": { "x": 50, "y": 28 }
         },
         {
-          "id": "bene-4",
-          "title": "APIs ",
+          "id": "Cert-3",
+          "title": "Oracle AI Agent Studio for Fusion Applications Foundations",
+          "type": "upload",
+          "description": "Registre aqui o certificado desta trilha técnica.",
+          "uploadHint": "Anexe o comprovante em um dos formatos aceitos e, se quiser, deixe uma observação.",
           "image": "imgs/bene-4.png",
-          "pos": { "x": 70, "y": 40 },
-          "quiz": [
-            {
-              "question": "API significa?",
-              "options": ["A. Application Programming Interface", "B. Advanced Process Integration", "C. Automated Payment Input"],
-              "answer": 0
-            },
-            {
-              "question": "APIs permitem?",
-              "options": ["A. Comunicação entre apps", "B. Isolamento total", "C. Apenas leitura"],
-              "answer": 0
-            },
-            {
-              "question": "Exemplo de uso de API?",
-              "options": ["A. Integrar pagamento online", "B. Escrever código manual", "C. Deletar dados"],
-              "answer": 0
-            }
-          ]
+          "pos": { "x": 72, "y": 40 }
         },
         {
-          "id": "bene-5",
-          "title": "Cloud ",
+          "id": "Cert-4",
+          "title": "Oracle Cloud Infrastructure Generative AI Professional",
+          "type": "upload",
+          "description": "Suba o certificado para marcar a missão como concluída.",
+          "uploadHint": "Envie o arquivo do certificado da Oracle University para completar esta etapa.",
           "image": "imgs/bene-5.png",
-          "pos": { "x": 30, "y": 40 },
-          "quiz": [
-            {
-              "question": "Cloud Computing é?",
-              "options": ["A. Armazenamento e processamento remoto", "B. Hardware local", "C. Software obsoleto"],
-              "answer": 0
-            },
-            {
-              "question": "Benefício da nuvem?",
-              "options": ["A. Escalabilidade e custo reduzido", "B. Limitação de acesso", "C. Maior manutenção"],
-              "answer": 0
-            },
-            {
-              "question": "AWS é?",
-              "options": ["A. Provedor de cloud", "B. Linguagem de programação", "C. Banco de dados local"],
-              "answer": 0
-            }
-          ]
+          "pos": { "x": 28, "y": 40 }
         }
       ]
     },
     {
-      "id": "it",
+      "id": "Benefícios",
       "name": "Benefícios",
-      "theme": "it",
+      "theme": "beneficios",
       "image": "imgs/island-verde.png",
       "courses": [
         {
-          "id": "it-1",
-          "title": "Vale Alimentação",
+          "id": "Bene-1",
+          "title": "Serviços de Saúde",
           "image": "imgs/it-1.png",
           "pos": { "x": 50, "y": 50 },
           "quiz": [
             {
-              "question": "Vale Alimentação é?",
-              "options": ["A. Benefício para refeições", "B. Salário extra", "C. Transporte"],
+              "question": "Quais são os serviços da Porto Seguro?",
+              "options": [
+                "A. Benefício para refeições",
+                "B. Salário extra",
+                "C. Transporte"
+              ],
               "answer": 0
             },
             {
               "question": "Pode ser usado em?",
-              "options": ["A. Supermercados e restaurantes", "B. Lojas de eletrônicos", "C. Viagens"],
+              "options": [
+                "A. Supermercados e restaurantes",
+                "B. Lojas de eletrônicos",
+                "C. Viagens"
+              ],
               "answer": 0
             },
             {
               "question": "Limite é definido por?",
-              "options": ["A. Lei e empresa", "B. Funcionário", "C. Banco"],
+              "options": [
+                "A. Lei e empresa",
+                "B. Funcionário",
+                "C. Banco"
+              ],
               "answer": 0
             }
           ]
         },
         {
-          "id": "it-2",
+          "id": "Bene-2",
           "title": "Plano de Saúde",
           "image": "imgs/it-2.png",
           "pos": { "x": 54, "y": 35 },
           "quiz": [
             {
               "question": "Plano de Saúde cobre?",
-              "options": ["A. Consultas e internações médicas", "B. Viagens internacionais", "C. Compras"],
+              "options": [
+                "A. Consultas e internações médicas",
+                "B. Viagens internacionais",
+                "C. Compras"
+              ],
               "answer": 0
             },
             {
               "question": "Coparticipação significa?",
-              "options": ["A. Pagamento parcial pelo usuário", "B. Cobertura total", "C. Sem uso"],
+              "options": [
+                "A. Pagamento parcial pelo usuário",
+                "B. Cobertura total",
+                "C. Sem uso"
+              ],
               "answer": 0
             },
             {
               "question": "Benefício para?",
-              "options": ["A. Bem-estar do colaborador", "B. Aumentar custos", "C. Reduzir salário"],
+              "options": [
+                "A. Bem-estar do colaborador",
+                "B. Aumentar custos",
+                "C. Reduzir salário"
+              ],
               "answer": 0
             }
           ]
         },
         {
-          "id": "it-3",
+          "id": "Bene-3",
           "title": "Auxílio Educação",
           "image": "imgs/it-3.png",
           "pos": { "x": 30, "y": 40 },
           "quiz": [
             {
               "question": "Auxílio Educação ajuda em?",
-              "options": ["A. Cursos e estudos", "B. Moradia", "C. Alimentação"],
+              "options": [
+                "A. Cursos e estudos",
+                "B. Moradia",
+                "C. Alimentação"
+              ],
               "answer": 0
             },
             {
               "question": "Pode incluir?",
-              "options": ["A. Reembolso de mensalidades", "B. Apenas livros", "C. Viagens"],
+              "options": [
+                "A. Reembolso de mensalidades",
+                "B. Apenas livros",
+                "C. Viagens"
+              ],
               "answer": 0
             },
             {
               "question": "Objetivo?",
-              "options": ["A. Desenvolvimento profissional", "B. Lazer", "C. Redundância"],
+              "options": [
+                "A. Desenvolvimento profissional",
+                "B. Lazer",
+                "C. Redundância"
+              ],
               "answer": 0
             }
           ]
         },
         {
-          "id": "it-4",
+          "id": "Bene-4",
           "title": "Previdência Privada",
           "image": "imgs/it-4.png",
           "pos": { "x": 70, "y": 40 },
           "quiz": [
             {
               "question": "Previdência Privada é?",
-              "options": ["A. Plano de aposentadoria complementar", "B. Seguro de vida", "C. Investimento em ações"],
+              "options": [
+                "A. Plano de aposentadoria complementar",
+                "B. Seguro de vida",
+                "C. Investimento em ações"
+              ],
               "answer": 0
             },
             {
               "question": "Contribui com?",
-              "options": ["A. Empresa e funcionário", "B. Apenas governo", "C. Nenhum"],
+              "options": [
+                "A. Empresa e funcionário",
+                "B. Apenas governo",
+                "C. Nenhum"
+              ],
               "answer": 0
             },
             {
               "question": "Benefício fiscal?",
-              "options": ["A. Deduções no IR", "B. Aumento de impostos", "C. Sem impacto"],
+              "options": [
+                "A. Deduções no IR",
+                "B. Aumento de impostos",
+                "C. Sem impacto"
+              ],
               "answer": 0
             }
           ]
         },
         {
-          "id": "bene-3",
+          "id": "Bene-3",
           "title": "Vale Transporte",
           "image": "imgs/bene-3.png",
           "pos": { "x": 40, "y": 30 },
           "quiz": [
             {
               "question": "Vale Transporte cobre?",
-              "options": ["A. Deslocamento casa-trabalho", "B. Férias", "C. Compras"],
+              "options": [
+                "A. Deslocamento casa-trabalho",
+                "B. Férias",
+                "C. Compras"
+              ],
               "answer": 0
             },
             {
               "question": "Calculado por?",
-              "options": ["A. Distância e meio de transporte", "B. Salário total", "C. Idade"],
+              "options": [
+                "A. Distância e meio de transporte",
+                "B. Salário total",
+                "C. Idade"
+              ],
               "answer": 0
             },
             {
               "question": "Obrigatório por?",
-              "options": ["A. Lei CLT", "B. Opcional", "C. Apenas para gerentes"],
+              "options": [
+                "A. Lei CLT",
+                "B. Opcional",
+                "C. Apenas para gerentes"
+              ],
               "answer": 0
             }
           ]
@@ -348,13 +425,13 @@
     }
   ],
   "users": [
-    { "id": "u-ana", "name": "Ana", "role": "intern", "sectorId": "finance" },
-    { "id": "u-bruno", "name": "Bruno", "role": "intern", "sectorId": "finance" },
-    { "id": "u-carla", "name": "Carla", "role": "intern", "sectorId": "beneficios" },
-    { "id": "u-diego", "name": "Diego", "role": "intern", "sectorId": "it" },
+    { "id": "u-ana", "name": "Ana", "role": "intern", "sectorId": "OnBoarding" },
+    { "id": "u-bruno", "name": "Bruno", "role": "intern", "sectorId": "OnBoarding" },
+    { "id": "u-carla", "name": "Carla", "role": "intern", "sectorId": "Cerficações" },
+    { "id": "u-diego", "name": "Diego", "role": "intern", "sectorId": "Benefícios" },
 
-    { "id": "a-fin", "name": "Admin Finanças", "role": "admin", "sectorId": "finance" },
-    { "id": "a-hr", "name": "Admin RH", "role": "admin", "sectorId": "beneficios" },
-    { "id": "a-it", "name": "Admin TI", "role": "admin", "sectorId": "it" }
+    { "id": "a-fin", "name": "Admin Finanças", "role": "admin", "sectorId": "OnBoarding" },
+    { "id": "a-hr", "name": "Admin RH", "role": "admin", "sectorId": "Cerficações" },
+    { "id": "a-it", "name": "Admin TI", "role": "admin", "sectorId": "Benefícios" }
   ]
 }
