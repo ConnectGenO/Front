@@ -61,6 +61,41 @@
           rgba(5, 0, 0, 0) 70%
         );
       }
+      @keyframes islandFloat {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(8px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.floating-island {
+  animation: islandFloat 4s ease-in-out infinite;
+  will-change: transform;
+  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
+}
+
+.floating-island.delay-1 {
+  animation-delay: 0.4s;
+}
+
+.floating-island.delay-2 {
+  animation-delay: 0.8s;
+}
+
+.floating-island.delay-3 {
+  animation-delay: 1.2s;
+}
     </style>
   </head>
 
@@ -140,7 +175,101 @@
         </div>
       </div>
     </header>
+    <!-- CARROSSEL DE ILHAS -->
+<section class="w-full py-10">
+  <div class="max-w-[1400px] mx-auto px-6">
 
+    <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary">explore</span>
+      Ilhas de Desenvolvimento  
+    </h2>
+
+    <div class="relative">
+
+      <!-- BOTÃO ESQUERDA -->
+      <button id="prevIsland"
+        class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-black/60 border border-white/10 rounded-full p-3">
+        <span class="material-symbols-outlined text-white">chevron_left</span>
+      </button>
+
+      <!-- CARROSSEL -->
+      <div id="islandCarousel"
+        class="flex gap-10 overflow-hidden scroll-smooth items-center">
+
+        <!-- ITEM -->
+        <div class="min-w-full flex items-center justify-center gap-12">
+
+          <img
+            src="arquivos/island-preto.png"
+            class="w-[500px] object-contain floating-island"
+          />
+
+          <div class="max-w-md">
+            <h3 class="text-3xl font-bold text-white mb-2">
+              OnBoarding CSS
+            </h3>
+
+            <p class="text-white/60 text-sm leading-relaxed">
+              Conheça os principais recursos da área de CSS, ferramentas utilizadas
+              e processos essenciais para iniciar sua jornada na equipe.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- ITEM -->
+        <div class="min-w-full flex items-center justify-center gap-12">
+
+          <img
+            src="arquivos/island-azulescuro.png"
+            class="w-[500px] object-contain floating-island"
+          />
+
+          <div class="max-w-md">
+            <h3 class="text-3xl font-bold text-white mb-2">
+              Certificações
+            </h3>
+
+            <p class="text-white/60 text-sm leading-relaxed">
+              Registre suas certificações da Oracle University e acompanhe
+              sua evolução técnica dentro do programa.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- ITEM -->
+        <div class="min-w-full flex items-center justify-center gap-12">
+
+          <img
+            src="arquivos/island-verde.png"
+            class="w-[500px] object-contain floating-island"
+          />
+
+          <div class="max-w-md">
+            <h3 class="text-3xl font-bold text-white mb-2">
+              Benefícios
+            </h3>
+
+            <p class="text-white/60 text-sm leading-relaxed">
+              Descubra todos os benefícios disponíveis para colaboradores
+              e como utilizá-los no seu dia a dia na empresa.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- BOTÃO DIREITA -->
+      <button id="nextIsland"
+        class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-black/60 border border-white/10 rounded-full p-3">
+        <span class="material-symbols-outlined text-white">chevron_right</span>
+      </button>
+
+    </div>
+  </div>
+</section>
     <main class="flex-grow w-full max-w-[1400px] mx-auto px-6 py-8">
       <!-- HERO -->
       <div
@@ -754,6 +883,63 @@
         </div>
       </div>
 
+      <!-- ILHAS DOS COLABORADORES -->
+      <section class="mb-12">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">beach_access</span>
+            Ilhas dos Colaboradores
+          </h2>
+          <div class="flex items-center gap-2">
+            <button
+              id="carouselPrev"
+              type="button"
+              class="rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white p-2 transition"
+              aria-label="Anterior"
+            >
+              <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <button
+              id="carouselNext"
+              type="button"
+              class="rounded-full border border-white/10 bg-white/5 hover:bg-white/10 text-white p-2 transition"
+              aria-label="Próxima"
+            >
+              <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="relative overflow-hidden rounded-3xl border border-white/10">
+          <div
+            id="carouselTrack"
+            class="flex transition-transform duration-500"
+            style="width:200%"
+          >
+            <div class="min-w-full">
+              <iframe
+                class="w-full h-[520px] md:h-[640px] bg-transparent"
+                src="ilhas-colaboradores/index.html"
+                frameborder="0"
+                allowtransparency="true"
+                loading="lazy"
+                title="Ilhas dos Colaboradores"
+              ></iframe>
+            </div>
+            <div class="min-w-full">
+              <iframe
+                class="w-full h-[520px] md:h-[640px] bg-transparent"
+                src="ilhas-diretores/index.html"
+                frameborder="0"
+                allowtransparency="true"
+                loading="lazy"
+                title="Ilhas dos Diretores"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+        <p class="mt-3 text-xs text-white/50">Use as setas para navegar entre as ilhas.</p>
+      </section>
 
       <!-- FOOTER -->
       <div class="bg-[#0f0505] border-t border-accent-dark rounded-2xl py-8 px-8">
@@ -772,5 +958,55 @@
         </div>
       </div>
     </main>
+
+    <script>
+      (() => {
+        const track = document.getElementById('carouselTrack');
+        const prev = document.getElementById('carouselPrev');
+        const next = document.getElementById('carouselNext');
+        const totalSlides = 2;
+        let currentIndex = 0;
+
+        const update = () => {
+          track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        };
+
+        prev.addEventListener('click', () => {
+          currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+          update();
+        });
+
+        next.addEventListener('click', () => {
+          currentIndex = (currentIndex + 1) % totalSlides;
+          update();
+        });
+      })();
+      
+const carousel = document.getElementById("islandCarousel");
+const next = document.getElementById("nextIsland");
+const prev = document.getElementById("prevIsland");
+
+let index = 0;
+
+function updateCarousel() {
+  const width = carousel.clientWidth;
+  carousel.scrollTo({
+    left: width * index,
+    behavior: "smooth"
+  });
+}
+
+next.onclick = () => {
+  index++;
+  if (index > carousel.children.length - 1) index = 0;
+  updateCarousel();
+};
+
+prev.onclick = () => {
+  index--;
+  if (index < 0) index = carousel.children.length - 1;
+  updateCarousel();
+};
+    </script>
   </body>
 </html>
