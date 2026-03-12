@@ -79,22 +79,48 @@
   }
 }
 
+@keyframes islandFloat {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.island-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
 .floating-island {
-  animation: islandFloat 4s ease-in-out infinite;
-  will-change: transform;
+  animation: islandFloat 5s ease-in-out infinite;
+  transition: transform 0.35s ease, filter 0.35s ease;
+  will-change: transform, filter;
   filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
+  cursor: pointer;
+}
+
+.island-link:hover .floating-island {
+  transform: scale(1.12);
+  filter: drop-shadow(0 24px 36px rgba(242, 13, 13, 0.25));
 }
 
 .floating-island.delay-1 {
-  animation-delay: 0.4s;
+  animation-delay: 0.3s;
 }
 
 .floating-island.delay-2 {
-  animation-delay: 0.8s;
+  animation-delay: 0.7s;
 }
 
 .floating-island.delay-3 {
-  animation-delay: 1.2s;
+  animation-delay: 1.1s;
 }
     </style>
   </head>
@@ -194,72 +220,7 @@
 
       <!-- CARROSSEL -->
       <div id="islandCarousel"
-        class="flex gap-10 overflow-hidden scroll-smooth items-center">
-
-        <!-- ITEM -->
-        <div class="min-w-full flex items-center justify-center gap-12">
-
-          <img
-            src="arquivos/island-preto.png"
-            class="w-[500px] object-contain floating-island"
-          />
-
-          <div class="max-w-md">
-            <h3 class="text-3xl font-bold text-white mb-2">
-              OnBoarding CSS
-            </h3>
-
-            <p class="text-white/60 text-sm leading-relaxed">
-              Conheça os principais recursos da área de CSS, ferramentas utilizadas
-              e processos essenciais para iniciar sua jornada na equipe.
-            </p>
-          </div>
-
-        </div>
-
-        <!-- ITEM -->
-        <div class="min-w-full flex items-center justify-center gap-12">
-
-          <img
-            src="arquivos/island-azulescuro.png"
-            class="w-[500px] object-contain floating-island"
-          />
-
-          <div class="max-w-md">
-            <h3 class="text-3xl font-bold text-white mb-2">
-              Certificações
-            </h3>
-
-            <p class="text-white/60 text-sm leading-relaxed">
-              Registre suas certificações da Oracle University e acompanhe
-              sua evolução técnica dentro do programa.
-            </p>
-          </div>
-
-        </div>
-
-        <!-- ITEM -->
-        <div class="min-w-full flex items-center justify-center gap-12">
-
-          <img
-            src="arquivos/island-verde.png"
-            class="w-[500px] object-contain floating-island"
-          />
-
-          <div class="max-w-md">
-            <h3 class="text-3xl font-bold text-white mb-2">
-              Benefícios
-            </h3>
-
-            <p class="text-white/60 text-sm leading-relaxed">
-              Descubra todos os benefícios disponíveis para colaboradores
-              e como utilizá-los no seu dia a dia na empresa.
-            </p>
-          </div>
-
-        </div>
-
-      </div>
+        class="flex gap-10 overflow-hidden scroll-smooth items-center"></div>
 
       <!-- BOTÃO DIREITA -->
       <button id="nextIsland"
@@ -960,53 +921,98 @@
     </main>
 
     <script>
-      (() => {
-        const track = document.getElementById('carouselTrack');
-        const prev = document.getElementById('carouselPrev');
-        const next = document.getElementById('carouselNext');
-        const totalSlides = 2;
-        let currentIndex = 0;
 
-        const update = () => {
-          track.style.transform = `translateX(-${currentIndex * 100}%)`;
-        };
+let DB = null;
 
-        prev.addEventListener('click', () => {
-          currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-          update();
-        });
+async function init() {
 
-        next.addEventListener('click', () => {
-          currentIndex = (currentIndex + 1) % totalSlides;
-          update();
-        });
-      })();
-      
+  const response = await fetch("data.json");
+  DB = await response.json();
+
+  renderIslands();
+
+}
+
+function renderIslands(){
+
+  const carousel = document.getElementById("islandCarousel");
+
+  carousel.innerHTML = DB.sectors.map((sector,index)=>{
+
+    return `
+      <div class="min-w-full flex items-center justify-center gap-12">
+
+        <a href="curso.html?sectorId=${sector.id}" class="island-link">
+
+          <img
+            src="${sector.image}"
+            class="w-[400px] floating-island"
+          />
+
+        </a>
+
+        <div class="max-w-md">
+
+          <h3 class="text-3xl font-bold text-white mb-2">
+            ${sector.name}
+          </h3>
+
+          <p class="text-white/60 text-sm">
+            Explore os cursos disponíveis nesta ilha.
+          </p>
+
+        </div>
+
+      </div>
+    `
+
+  }).join("")
+
+}
+
 const carousel = document.getElementById("islandCarousel");
 const next = document.getElementById("nextIsland");
 const prev = document.getElementById("prevIsland");
 
 let index = 0;
 
-function updateCarousel() {
+function updateCarousel(){
+
   const width = carousel.clientWidth;
+
   carousel.scrollTo({
     left: width * index,
-    behavior: "smooth"
+    behavior:"smooth"
   });
+
 }
 
-next.onclick = () => {
-  index++;
-  if (index > carousel.children.length - 1) index = 0;
-  updateCarousel();
-};
+next.onclick = ()=>{
 
-prev.onclick = () => {
-  index--;
-  if (index < 0) index = carousel.children.length - 1;
+  index++;
+
+  if(index > carousel.children.length-1){
+    index = 0;
+  }
+
   updateCarousel();
-};
+
+}
+
+prev.onclick = ()=>{
+
+  index--;
+
+  if(index < 0){
+    index = carousel.children.length-1;
+  }
+
+  updateCarousel();
+
+}
+
+init();
+
     </script>
   </body>
 </html>

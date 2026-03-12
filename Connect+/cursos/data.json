@@ -1,0 +1,49 @@
+{
+  "sectors": [
+    {
+      "id": "OnBoarding",
+      "name": "OnBoarding CSS",
+      "image": "imgs/island-preto.png",
+      "courses": [
+        {
+          "title": "Introdução ao CSS",
+          "material": "https://developer.mozilla.org/pt-BR/docs/Web/CSS"
+        },
+        {
+          "title": "Flexbox",
+          "material": "https://css-tricks.com/snippets/css/a-guide-to-flexbox/"
+        }
+      ]
+    },
+    {
+      "id": "Certificacoes",
+      "name": "Certificações",
+      "image": "imgs/island-azulescuro.png",
+      "courses": [
+        {
+          "title": "Oracle Foundations",
+          "material": "https://education.oracle.com"
+        },
+        {
+          "title": "OCI Cloud Architect",
+          "material": "https://learn.oracle.com"
+        }
+      ]
+    },
+    {
+      "id": "Beneficios",
+      "name": "Benefícios",
+      "image": "imgs/island-verde.png",
+      "courses": [
+        {
+          "title": "Plano de Saúde",
+          "material": "beneficios.html"
+        },
+        {
+          "title": "Gympass",
+          "material": "beneficios.html"
+        }
+      ]
+    }
+  ]
+}
